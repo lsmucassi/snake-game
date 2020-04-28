@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
      let intervalTime = 0
      let interval = 0
 
-
      //game start and reset
      function startGame() {
          currentSnake.forEach(index => squares[index].classList.remove('snake'))
@@ -28,6 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = 0
         currentSnake.forEach(index => squares[index].classList.add('snake'))
         interval = setInterval(moveOutcomes, intervalTime)
+     }
+
+     //collision detection against self and borders
+     function moveOutcomes() {
+         if (
+            (currentSnake[0] + width >= (width * width) &&  direction === width) || // snake hits bottom
+            (currentSnake[0] % width === width -1 && direction === 1) || //snake hits right wall
+            (currentSnake[0] % width === 0 && direction === -1) || //snake hits left wall
+            (currentSnake[0] - width < 0 && direction === -width) || //snake hits top
+            squares[currentSnake[0] + direction].classList.contains('snake') // snake hits itself
+            ) 
      }
 
      //assign keycodes/ navigationof snake
