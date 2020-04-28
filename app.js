@@ -37,7 +37,22 @@ document.addEventListener('DOMContentLoaded', () => {
             (currentSnake[0] % width === 0 && direction === -1) || //snake hits left wall
             (currentSnake[0] - width < 0 && direction === -width) || //snake hits top
             squares[currentSnake[0] + direction].classList.contains('snake') // snake hits itself
-            ) 
+            ) {
+                return clearInterval(intervalTime)
+            }
+
+            const tail = currentSnake.pop()
+            squares[tail].classList.remove('snake')
+            currentSnake.unshift(currentSnake[0] + direction)
+
+            //snake gets the apple
+            if (squares[currentSnake[0]].classList.contains('apple')) {
+                squares[currentSnake[0]].classList.remove('apple')
+                squares[tail].classList.add(snake)
+                currentSnake.push(tail)
+                // randomApple
+                score
+            }
      }
 
      //assign keycodes/ navigationof snake
