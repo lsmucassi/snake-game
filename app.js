@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
      //game start and reset
      function startGame() {
-         currentSnake.forEach(index => squares[index].classList.remove('snake'))
-         squares[appleIndex].classList.remove('apple')
-         clearInterval(interval)
-         score = 0
-        //  randomApple()
+        currentSnake.forEach(index => squares[index].classList.remove('snake'))
+        squares[appleIndex].classList.remove('apple')
+        clearInterval(interval)
+        score = 0
+        randomApple()
         direction = 1
         scroreDisplay.innerHTML = score
         intervalTime = 1000
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             (currentSnake[0] - width < 0 && direction === -width) || //snake hits top
             squares[currentSnake[0] + direction].classList.contains('snake') // snake hits itself
             ) {
-                return clearInterval(intervalTime)
+                return clearInterval(interval)
             }
 
             const tail = currentSnake.pop()
@@ -50,9 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 squares[currentSnake[0]].classList.remove('apple')
                 squares[tail].classList.add(snake)
                 currentSnake.push(tail)
-                // randomApple
-                score
+                randomApple()
+                score++
+                scroreDisplay.textContent = score
+                clearInterval(interval)
+                intervalTime = intervalTime + speed
+                interval = setInterval(moveOutcomes, intervalTime)
             }
+            squares[currentSnake[0]].classList.add('snake')
+     }
+
+     //generate a random apple
+     function randomApple() {
+         do {
+             appleIndex = Math.floor(Math.random() * squares.length)
+         } while (squares[appleIndex].classList.contains('snake'))
+         squares[appleIndex].classList.add('apple')
      }
 
      //assign keycodes/ navigationof snake
@@ -64,11 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
          } else if (e.keyCode === 38) {
              direction = -width //up arrow
          } else if (e.keyCode === 37) {
-             direction -1 //left arrow
+             direction = -1 //left arrow
          } else if (e.keyCode === 40) {
              direction = +width // down arrow
          }
      }
 
      document.addEventListener('keyup', control)
+     startBtn.addEventListener('click', startGame)
 })
